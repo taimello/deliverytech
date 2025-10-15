@@ -4,7 +4,6 @@ import lombok.Data;
 import jakarta.persistence.*;
 import java.util.List;
 
-
 @Entity
 @Data
 
@@ -20,7 +19,10 @@ public class Cliente {
     private boolean ativo;
 
     @OneToMany(mappedBy = "cliente")
-
     private List<Pedido> pedidos;
+
+    public void inativar() {
+        this.ativo = false;
+    }
 
 }
