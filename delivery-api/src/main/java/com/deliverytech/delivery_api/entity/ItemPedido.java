@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
 
@@ -13,11 +15,25 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int quantidade;
+    private Integer quantidade;
     private BigDecimal precoUnitario;
     private BigDecimal subTotal;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonIgnore
+    private Pedido pedido;
+
+    // Calcula o subtotal do items
+    public void calcularSubtotal() {
+        if (precoUnitario != null && quantidade != null) {
+            subTotal = precoUnitario.multiply(BigDecimal.valueOf(quantidade));
+        } else {
+            subTotal = BigDecimal.ZERO;
+        }
+    }
 }
