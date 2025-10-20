@@ -157,5 +157,12 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) 
                 .body("Erro interno do servidor"); 
         } 
-    } 
+    }
+
+    @GetMapping("/hoje")
+    public ResponseEntity<List<Pedido>> pedidosDoDia() {
+    List<Pedido> pedidos = pedidoService.listarPedidosDoDia();
+    return ResponseEntity.ok(pedidos);
+    }
+ 
 }

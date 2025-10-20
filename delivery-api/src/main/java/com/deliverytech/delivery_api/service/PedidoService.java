@@ -1,5 +1,8 @@
 package com.deliverytech.delivery_api.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +46,7 @@ public class PedidoService {
         }
 
         Pedido pedido = new Pedido();
-        pedido.setClienteId(clienteId);
+        pedido.setCliente(cliente);
         pedido.setRestaurante(restaurante);
         pedido.setStatus(StatusPedido.PENDENTE);
 
@@ -156,6 +159,13 @@ public class PedidoService {
 
     public List<Pedido> listarPorCliente(Long clienteId) {
         return pedidoRepository.findByClienteIdOrderByDataPedidoDesc(clienteId);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Pedido> listarPedidosDoDia() {
+        LocalDateTime inicio = LocalDate.now().atStartOfDay();
+        LocalDateTime fim = LocalDate.now().atTime(LocalTime.MAX);
+        return pedidoRepository.findPedidosDoDia(inicio, fim);
     }
 
 }

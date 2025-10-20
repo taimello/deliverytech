@@ -19,7 +19,8 @@ public class Pedido {
     private BigDecimal subtotal;
     private BigDecimal taxaEntrega;
     private BigDecimal valorTotal;
-    private Long clienteId;
+    private String numeroPedido;
+
 
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
@@ -30,6 +31,11 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id") // chave estrangeira no banco
+    private Cliente cliente;
+
 
     public void confirmar() {
         this.status = StatusPedido.CONFIRMADO;

@@ -19,6 +19,7 @@ public class Restaurante {
     private String telefone;
     private BigDecimal taxaEntrega;
     private boolean ativo;
+    private BigDecimal avaliacao;
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;

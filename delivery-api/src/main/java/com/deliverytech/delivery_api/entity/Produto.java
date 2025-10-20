@@ -3,6 +3,7 @@ package com.deliverytech.delivery_api.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +21,7 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ItemPedido> itensPedido;
 }

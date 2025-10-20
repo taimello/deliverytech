@@ -1,7 +1,6 @@
 package com.deliverytech.delivery_api.repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,8 +31,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByDataPedidoBetweenOrderByDataPedidoDesc(LocalDateTime inicio, LocalDateTime fim);
 
     //Buscar pedidos do dia
-    @Query("SELECT p FROM Pedido p WHERE DATE (p.dataPedido) = CURRENT_DATE ORDER BY p.dataPedido DESC")
-    List<Pedido>findPedidosDoDia();
+    @Query("SELECT p FROM Pedido p WHERE p.dataPedido BETWEEN :inicio AND :fim ORDER BY p.dataPedido DESC")
+    List<Pedido>findPedidosDoDia(@Param("inicio")LocalDateTime inicio, @Param("fim") LocalDateTime fim);
 
     //Buscar pedidos por restaurante
     @Query("SELECT p FROM Pedido p WHERE p.restaurante.id = :restauranteId ORDER BY p.dataPedido DESC")
@@ -44,11 +43,11 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Object[]> countPedidosByStatus();
 
     //Pedidos pendentes 
-    @Query("SELECT p FROM Pedido p WHERE p.status IN('PENDENTE', 'CONFIRMADO', 'PREPARANDO ')") + ("ORDER BY p.dataPedido ASC")
+    @Query("SELECT p FROM Pedido p WHERE p.status IN('PENDENTE', 'CONFIRMADO', 'PREPARANDO') ORDER BY p.dataPedido ASC")
     List<Pedido> findPedidosPendentes();
 
     //Valor total de vendas por periodo
-    @Query("SELECT SUM(p.valorTotal) FROM Pedido p WHERE p.dataPedido BETWEEN :incio AND :fim" + "AND p.status NOT IN ('CANCELADO')")
+    @Query("SELECT SUM(p.valorTotal) FROM Pedido p WHERE p.dataPedido BETWEEN :inicio AND :fim AND p.status NOT IN ('CANCELADO')")
     BigDecimal calcularVendasPorPeriodo(@Param("inicio")LocalDateTime inicio, @Param("fim")LocalDateTime fim);
 
 }

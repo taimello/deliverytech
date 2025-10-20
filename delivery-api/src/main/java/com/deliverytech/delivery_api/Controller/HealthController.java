@@ -1,4 +1,4 @@
-package com.deliverytech.delivery_api.Controller;
+package com.deliverytech.delivery_api.controller;
 
 import java.time.LocalDateTime;
 import java.util.Map;
