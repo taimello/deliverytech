@@ -1,6 +1,7 @@
 package com.deliverytech.delivery_api.repository;
 
 import com.deliverytech.delivery_api.entity.Restaurante;
+import com.deliverytech.delivery_api.dto.projection.RelatorioVendas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,4 +44,7 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
     //Categorias disponíveis
     @Query("SELECT DISTINCT r.categoria FROM Restaurante r WHERE r.ativo = true ORDER BY r.categoria")
     List<String>findCategoriasDisponiveis();
+
+    @Query("SELECT r.nome AS nomeRestaurante, SUM(p.valorTotal) AS totalVendas, COUNT(p.id) AS quantidadePedidos FROM Restaurante r LEFT JOIN Pedido p ON r.id = p.restaurante.id GROUP BY r.id, r.nome")
+    List<RelatorioVendas> relatorioVendasPorRestaurantes();
 }
